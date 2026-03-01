@@ -13,5 +13,5 @@ deployment-output-*.json
 *.log
 
 # Generated ARM templates (built from Bicep)
-**/*.json
-!parameters*.json
+bicep/**/*.json
+!bicep/parameters*.json

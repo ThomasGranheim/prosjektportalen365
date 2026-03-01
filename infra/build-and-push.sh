@@ -56,14 +56,16 @@ az acr login --name "$REGISTRY_NAME"
 
 # Build Docker image
 IMAGE_TAG="spfx-dev:latest"
+IMAGE_TIMESTAMP="spfx-dev:$(date +%Y%m%d-%H%M%S)"
 IMAGE_NAME="${CONTAINER_REGISTRY}/${IMAGE_TAG}"
+IMAGE_NAME_TIMESTAMPED="${CONTAINER_REGISTRY}/${IMAGE_TIMESTAMP}"
 
 print_info "Building Docker image: $IMAGE_NAME"
 docker build \
     --file "${SCRIPT_DIR}/Dockerfile" \
     --target development \
     --tag "$IMAGE_NAME" \
-    --tag "${CONTAINER_REGISTRY}/spfx-dev:$(date +%Y%m%d-%H%M%S)" \
+    --tag "$IMAGE_NAME_TIMESTAMPED" \
     "$PROJECT_ROOT"
 
 if [ $? -eq 0 ]; then
@@ -79,7 +81,8 @@ docker push "$IMAGE_NAME"
 
 if [ $? -eq 0 ]; then
     print_info "Docker image pushed successfully"
-    docker push "${CONTAINER_REGISTRY}/spfx-dev:$(date +%Y%m%d-%H%M%S)"
+    print_info "Pushing timestamped image..."
+    docker push "$IMAGE_NAME_TIMESTAMPED"
 else
     print_error "Docker push failed"
     exit 1
