@@ -1,0 +1,13 @@
+# Ignore deployment outputs (contain sensitive info)
+deployment-output-*.json
+
+# Ignore local development files
+.env
+.env.local
+
+# Docker volumes
+.docker/
+
+# Temporary files
+*.tmp
+*.log
