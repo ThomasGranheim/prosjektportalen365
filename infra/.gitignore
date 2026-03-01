@@ -11,3 +11,7 @@ deployment-output-*.json
 # Temporary files
 *.tmp
 *.log
+
+# Generated ARM templates (built from Bicep)
+**/*.json
+!parameters*.json
