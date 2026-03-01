@@ -1,0 +1,33 @@
+services:
+  spfx-dev:
+    build:
+      context: ..
+      dockerfile: infra/Dockerfile
+      target: development
+    container_name: pp365-spfx-dev
+    volumes:
+      # Mount the entire project
+      - ../:/workspace:cached
+      # Prevent node_modules from being mounted from host
+      - /workspace/node_modules
+      - /workspace/SharePointFramework/@Shared/node_modules
+      - /workspace/SharePointFramework/ProjectWebParts/node_modules
+      - /workspace/SharePointFramework/PortfolioWebParts/node_modules
+      - /workspace/SharePointFramework/ProjectExtensions/node_modules
+    ports:
+      - "4321:4321"  # SPFx workbench port
+      - "5432:5432"  # SPFx manifest server port
+      - "35729:35729" # LiveReload port
+    environment:
+      - NODE_ENV=development
+      - SPFX_SERVE_NOBROWSER=true
+    working_dir: /workspace
+    command: tail -f /dev/null  # Keep container running
+    stdin_open: true
+    tty: true
+    networks:
+      - pp365-network
+
+networks:
+  pp365-network:
+    driver: bridge
